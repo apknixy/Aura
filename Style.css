@@ -1,0 +1,652 @@
+/* General Reset & Body Styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app-container {
+    max-width: 600px; /* Constrain width for mobile-like app experience */
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    width: 100%;
+    flex-grow: 1; /* Allows screen to take available vertical space */
+    overflow-y: auto; /* Enable scrolling for content within each screen */
+    padding-bottom: 70px; /* Space for bottom nav bar */
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Login Screen */
+#login-screen {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 350px;
+}
+
+.login-box h1 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.login-box p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#username-input,
+.login-box input[type="text"],
+.login-box input[type="url"],
+.login-box textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#username-status {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.emoji-picker {
+    margin: 20px 0;
+    text-align: left;
+}
+
+#emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.emoji-option {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.emoji-option:hover {
+    background-color: #f0f0f0;
+}
+
+.emoji-option.selected {
+    background-color: #e0f2f7;
+    border: 1px solid #007bff;
+}
+
+.login-box button,
+.social-btn,
+.nav-btn,
+.action-btn,
+.upload-options button,
+.profile-content-switcher button,
+.profile-header button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.login-box button {
+    background-color: #007bff;
+    color: white;
+}
+
+.login-box button:hover {
+    background-color: #0056b3;
+}
+
+.social-login-options {
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.social-btn.google {
+    background-color: #db4437; /* Google Red */
+    color: white;
+}
+
+.social-btn.google:hover {
+    background-color: #c0392b;
+}
+
+.social-btn.facebook {
+    background-color: #3b5998; /* Facebook Blue */
+    color: white;
+}
+
+.social-btn.facebook:hover {
+    background-color: #2d4373;
+}
+
+/* Main App Interface */
+#main-app-screen {
+    padding-top: 60px; /* Space for top bar */
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.search-container {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+#search-input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+#search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    color: #555;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 14px;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav-btn.active {
+    color: #007bff;
+}
+
+.nav-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Content Sections */
+.content-section {
+    display: none;
+    padding: 15px;
+    padding-top: 0; /* Adjusted for top bar */
+}
+
+.content-section.active-content {
+    display: block;
+}
+
+h2 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+/* Video Grid (Home & Profile) */
+.video-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.video-thumbnail {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.video-info {
+    padding: 10px;
+}
+
+.video-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    line-height: 1.3;
+    color: #333;
+}
+
+.channel-name {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.views-time {
+    font-size: 13px;
+    color: #888;
+}
+
+/* Shorts Reel */
+.shorts-reel {
+    display: flex;
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+
+.short-item {
+    flex: 0 0 180px; /* Fixed width for shorts, adjust as needed */
+    height: 320px; /* Fixed height */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.short-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.short-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.short-action-btn {
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.short-action-btn:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Upload Section */
+.upload-options {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.upload-options button {
+    flex: 1;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.upload-options button:hover {
+    background-color: #218838;
+}
+
+.upload-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.upload-form h3 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.upload-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.upload-form button {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Profile Section */
+.profile-header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.profile-emoji {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+#profile-channel-name {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.total-views {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+#channel-description {
+    width: calc(100% - 20px);
+    max-width: 350px;
+    margin: 10px auto;
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 60px;
+    resize: vertical;
+}
+
+#save-channel-description-btn {
+    width: auto;
+    padding: 8px 20px;
+    background-color: #6c757d;
+    color: white;
+    display: block;
+    margin: 10px auto;
+}
+
+#save-channel-description-btn:hover {
+    background-color: #5a6268;
+}
+
+.profile-content-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.profile-content-switcher button {
+    background-color: #e9ecef;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.profile-content-switcher button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.profile-content-grid {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smaller grid for profile uploads */
+    gap: 15px;
+}
+
+.profile-content-grid.active-profile-content {
+    display: grid;
+}
+
+/* Video Playback Screen */
+#video-playback-screen, #shorts-playback-screen {
+    padding: 0; /* No padding directly on screen, content handles it */
+}
+
+#back-to-home-btn, #back-to-shorts-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin: 15px;
+    width: auto;
+    font-size: 14px;
+}
+
+#back-to-home-btn:hover, #back-to-shorts-btn:hover {
+    background-color: #5a6268;
+}
+
+.video-player-container, .shorts-player-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.video-player-container iframe, .shorts-player-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#video-playback-title {
+    padding: 15px;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.video-meta {
+    padding: 0 15px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.video-description-area {
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
+#video-playback-description {
+    white-space: pre-wrap; /* Preserve line breaks */
+    max-height: 80px; /* Initially limit height */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+#video-playback-description.expanded {
+    max-height: none;
+}
+
+#show-more-description-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    margin-top: 5px;
+    display: block; /* Ensures button is on its own line */
+}
+
+.video-actions, .shorts-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #555;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #f0f0f0;
+}
+
+#related-videos-list {
+    padding: 15px;
+}
+
+/* Ad Containers */
+.ad-container {
+    background-color: #f8f8f8;
+    border: 1px dashed #ccc;
+    padding: 15px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.ad-container p {
+    margin: 0 0 10px 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.ad-container h3 {
+    color: #d9534f;
+    margin-top: 0;
+}
+
+.ad-link {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.ad-link:hover {
+    background-color: #0056b3;
+}
+
+.full-screen-ad {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    height: 100vh; /* Takes full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff; /* Or a darker overlay */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* Ensure it's on top */
+    display: none; /* Hidden by default, shown when needed */
+}
+
+/* Responsive adjustments */
+@media (min-width: 601px) {
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+    }
+}
