@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airaview - Your Ultimate Video Experience</title>
+    <link rel="stylesheet" href="style.css"> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+</head>
+<body>
+
+    <div id="app-container">
+
+        <section id="login-screen" class="screen active">
+            <div class="login-box">
+                <h1>Welcome to Airaview</h1>
+                <p>Login or create your channel to get started!</p>
+                <input type="text" id="username-input" placeholder="Enter your unique channel name">
+                <button id="check-username-btn">Check Availability</button>
+                <p id="username-status"></p>
+
+                <div class="emoji-picker">
+                    <p>Choose your profile emoji:</p>
+                    <div id="emoji-grid">
+                        </div>
+                    <input type="hidden" id="selected-emoji">
+                </div>
+
+                <button id="create-channel-btn">Create My Channel</button>
+
+                <div class="social-login-options">
+                    <p>Or login with:</p>
+                    <button id="google-login-btn" class="social-btn google">Login with Google</button>
+                    <button id="facebook-login-btn" class="social-btn facebook">Login with Facebook</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="main-app-screen" class="screen">
+            <header class="top-bar">
+                <div class="logo">Airaview</div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search videos...">
+                    <button id="search-btn">🔍</button>
+                </div>
+            </header>
+
+            <nav class="bottom-nav">
+                <button class="nav-btn" id="home-nav-btn">🏠 Home</button>
+                <button class="nav-btn" id="shorts-nav-btn">⚡ Shorts</button>
+                <button class="nav-btn" id="upload-nav-btn">➕ Upload</button>
+                <button class="nav-btn" id="profile-nav-btn">👤 Profile</button>
+            </nav>
+
+            <div id="home-section" class="content-section active-content">
+                <h2>Recommended Videos</h2>
+                <div id="video-list" class="video-grid">
+                    </div>
+                <div class="ad-container native-ad">
+                    <p>Advertisement</p>
+                </div>
+            </div>
+
+            <div id="shorts-section" class="content-section">
+                <h2>Shorts</h2>
+                <div id="shorts-list" class="shorts-reel">
+                    </div>
+                <div class="ad-container direct-link-ad">
+                    <p>Sponsored Content</p>
+                    <a href="https://www.profitableratecpm.com/ekqigjxxf?key=7cc9b0386975c414c8ab9629f405b0dc" target="_blank" class="ad-link">Click here to explore!</a>
+                </div>
+            </div>
+
+            <div id="upload-section" class="content-section">
+                <h2>Upload Content</h2>
+                <div class="upload-options">
+                    <button id="upload-short-btn">Upload Short</button>
+                    <button id="upload-video-btn">Upload Video</button>
+                </div>
+
+                <div id="short-upload-form" class="upload-form">
+                    <h3>Upload New Short</h3>
+                    <input type="text" id="short-title-input" placeholder="Short Title (2-100 words)" maxlength="100">
+                    <textarea id="short-description-input" placeholder="Short Description (max 4000 words)" maxlength="4000"></textarea>
+                    <input type="text" id="short-tags-input" placeholder="Tags (comma separated, max 500 words)" maxlength="500">
+                    <input type="url" id="short-link-input" placeholder="YouTube Short Link">
+                    <button id="submit-short-btn">Submit Short</button>
+                </div>
+
+                <div id="video-upload-form" class="upload-form">
+                    <h3>Upload New Video</h3>
+                    <input type="text" id="video-title-input" placeholder="Video Title (2-100 words)" maxlength="100">
+                    <textarea id="video-description-input" placeholder="Video Description (max 4000 words)" maxlength="4000"></textarea>
+                    <input type="text" id="video-tags-input" placeholder="Tags (comma separated, max 500 words)" maxlength="500">
+                    <input type="url" id="video-link-input" placeholder="YouTube Video Link">
+                    <button id="submit-video-btn">Submit Video</button>
+                </div>
+            </div>
+
+            <div id="profile-section" class="content-section">
+                <h2>Your Profile</h2>
+                <div class="profile-header">
+                    <div id="profile-emoji" class="profile-emoji">😊</div>
+                    <h3 id="profile-channel-name">YourChannelName</h3>
+                    <p>Followers: <span id="profile-followers">0</span> | Following: <span id="profile-following">0</span></p>
+                    <textarea id="channel-description" placeholder="Add your channel description here..." maxlength="4000"></textarea>
+                    <button id="save-channel-description-btn">Save Description</button>
+                </div>
+                <p class="total-views">Total Channel Views: <span id="channel-total-views">0</span></p>
+
+                <div class="profile-content-switcher">
+                    <button class="profile-content-btn active" data-content="profile-videos">Videos</button>
+                    <button class="profile-content-btn" data-content="profile-shorts">Shorts</button>
+                </div>
+
+                <div id="profile-videos-list" class="profile-content-grid active-profile-content">
+                    </div>
+                <div id="profile-shorts-list" class="profile-content-grid">
+                    </div>
+            </div>
+
+            <div id="video-playback-screen" class="screen">
+                <button id="back-to-home-btn">← Back to Home</button>
+                <div class="video-player-container">
+                    <iframe id="youtube-player" width="100%" height="auto" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h2 id="video-playback-title"></h2>
+                <p class="video-meta">Views: <span id="video-playback-views"></span> • <span id="video-playback-time"></span></p>
+                <div class="video-description-area">
+                    <p id="video-playback-description"></p>
+                    <button id="show-more-description-btn">More+</button>
+                </div>
+                <div class="video-actions">
+                    <button class="action-btn">👍 Like</button>
+                    <button class="action-btn">↗️ Share</button>
+                    <button class="action-btn">💬 Comment</button>
+                </div>
+
+                <div class="ad-container banner-ad">
+                    <p>Advertisement</p>
+                </div>
+
+                <h3>More Videos</h3>
+                <div id="related-videos-list" class="video-grid">
+                    </div>
+            </div>
+
+            <div id="shorts-playback-screen" class="screen">
+                <button id="back-to-shorts-btn">← Back to Shorts</button>
+                <div class="shorts-player-container">
+                    <iframe id="youtube-shorts-player" width="100%" height="auto" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="shorts-actions">
+                    <button class="action-btn">👍 Like</button>
+                    <button class="action-btn">↗️ Share</button>
+                    <button class="action-btn">💬 Comment</button>
+                </div>
+                <div class="ad-container full-screen-ad">
+                    <h3>Advertisement</h3>
+                    <p>This is an ad from our sponsor. Click below to support us!</p>
+                    <a href="https://www.profitableratecpm.com/ekqigjxxf?key=7cc9b0386975c414c8ab9629f405b0dc" target="_blank" class="ad-link">Visit Sponsor</a>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnbLZ6GQgRDMurhcGAJ5KseTrFPNq3-js",
+            authDomain: "airaview.firebaseapp.com",
+            databaseURL: "https://airaview-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "airaview",
+            storageBucket: "airaview.firebasestorage.app",
+            messagingSenderId: "547164172741",
+            appId: "1:547164172741:web:9ffc76f0522610d91b9bac"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Google Client ID (for potential native Google Sign-in if needed in Android, though Firebase Auth handles web)
+        const googleClientId = "274899310104-lvm7m5is13bihr8qfcaldlaphm01fiuc.apps.googleusercontent.com";
+        // Google Secret (not typically used on client-side for Firebase Auth)
+        const googleSecret = "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";
+
+        // --- JavaScript for UI Logic and Firebase Interactions (This will be extensive) ---
+        // This is where you'll write code to:
+        // 1. Handle screen transitions (login vs. main app)
+        // 2. Manage user authentication (Google, Facebook, anonymous)
+        // 3. Check username availability and save it to Firebase
+        // 4. Handle emoji selection for profile pictures
+        // 5. Fetch and display videos/shorts from Firebase
+        // 6. Handle video/short playback (embedding YouTube iframes)
+        // 7. Implement search functionality
+        // 8. Handle video/short uploads to Firebase
+        // 9. Update profile information (followers, following, description)
+        // 10. **Crucially: Implement JavaScript Interface calls for Unity Ads**
+        // 11. Integrate Adstreaa ad codes (as placeholders shown above, you'll uncomment/add them where appropriate)
+
+        // Example: Initial screen display logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const mainAppScreen = document.getElementById('main-app-screen');
+
+            // Check if user is logged in (Firebase Auth)
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    loginScreen.classList.remove('active');
+                    mainAppScreen.classList.add('active');
+                    // Further logic to load user data, videos, etc.
+                } else {
+                    loginScreen.classList.add('active');
+                    mainAppScreen.classList.remove('active');
+                }
+            });
+
+            // Example: Google Login
+            document.getElementById('google-login-btn').addEventListener('click', async () => {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                try {
+                    await auth.signInWithPopup(provider);
+                    // User successfully logged in, handle UI updates
+                } catch (error) {
+                    console.error("Google login error:", error);
+                    alert("Google login failed: " + error.message);
+                }
+            });
+
+            // Example: Check Username Availability (Simplified)
+            document.getElementById('check-username-btn').addEventListener('click', async () => {
+                const username = document.getElementById('username-input').value.trim();
+                const statusElement = document.getElementById('username-status');
+                if (username.length < 3) {
+                    statusElement.textContent = 'Username too short.';
+                    statusElement.style.color = 'red';
+                    return;
+                }
+                const usernameRef = database.ref('usernames/' + username.toLowerCase());
+                const snapshot = await usernameRef.once('value');
+                if (snapshot.exists()) {
+                    statusElement.textContent = 'Username already taken.';
+                    statusElement.style.color = 'red';
+                } else {
+                    statusElement.textContent = 'Username available!';
+                    statusElement.style.color = 'green';
+                }
+            });
+
+            // Example: Displaying Emojis (You'd have a large array of emojis)
+            const emojiGrid = document.getElementById('emoji-grid');
+            const emojis = ['😀', '😁', '😂', '🤣', '😅', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😜', '🤪', '😝', '🤑'];
+            emojis.forEach(emoji => {
+                const emojiSpan = document.createElement('span');
+                emojiSpan.textContent = emoji;
+                emojiSpan.classList.add('emoji-option');
+                emojiSpan.addEventListener('click', () => {
+                    document.querySelectorAll('.emoji-option').forEach(e => e.classList.remove('selected'));
+                    emojiSpan.classList.add('selected');
+                    document.getElementById('selected-emoji').value = emoji;
+                });
+                emojiGrid.appendChild(emojiSpan);
+            });
+
+            // --- Placeholder for Unity Ad Call (THIS IS CRITICAL FOR ANDROID APP INTEGRATION) ---
+            // This function would be called when a video starts playing
+            function showUnityVideoAd() {
+                // This is a placeholder. In your Android WebView code, you'll expose a
+                // JavaScript interface (e.g., named "AndroidBridge") that has a method like showUnityAd().
+                // The HTML/JavaScript will then call this method.
+                if (window.AndroidBridge && typeof window.AndroidBridge.showUnityAd === 'function') {
+                    window.AndroidBridge.showUnityAd();
+                    console.log("Attempting to show Unity Ad via Android Bridge.");
+                } else {
+                    console.warn("AndroidBridge.showUnityAd is not available. Running in browser or without native Unity Ad integration.");
+                    // For testing in browser, you might just simulate an ad or skip
+                    alert("Unity Ad would play here in the app!");
+                }
+            }
+
+            // Example: Call showUnityVideoAd() when a video thumbnail is clicked (before actual playback)
+            // This needs to be integrated into your video playback logic.
+            // document.getElementById('video-list').addEventListener('click', (event) => {
+            //     if (event.target.closest('.video-thumbnail')) {
+            //         showUnityVideoAd();
+            //         // Then proceed with video playback logic
+            //     }
+            // });
+
+            // --- Adstreaa Ad Code Integration ---
+            // You can uncomment and place these scripts directly into your HTML
+            // where you want the ads to appear. Be mindful of layout and user experience.
+
+            /* Popunder Ad (Often disruptive, consider carefully) */
+            // const popunderScript = document.createElement('script');
+            // popunderScript.type = 'text/javascript';
+            // popunderScript.src = '//pl26835142.profitableratecpm.com/db/27/6d/db276d3b5f1289379bbe5d365485ac52.js';
+            // document.body.appendChild(popunderScript);
+
+            /* Social Bar Ad */
+            // const socialBarScript = document.createElement('script');
+            // socialBarScript.type = 'text/javascript';
+            // socialBarScript.src = '//pl26835180.profitableratecpm.com/51/87/c3/5187c39d0d72d45de29e9c62b51aaba2.js';
+            // document.body.appendChild(socialBarScript);
+
+            // Other banner ads and native ads are typically placed within specific div elements
+            // as shown in the HTML structure comments.
+
+            // --- More complex JS for content loading, navigation, etc. goes here ---
+            // (This will be a lot of code, managing Firebase reads/writes, UI updates, etc.)
+        });
+    </script>
+    <script src="script.js"></script> </body>
+</html>
